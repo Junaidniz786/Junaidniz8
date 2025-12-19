@@ -20,15 +20,15 @@ from telegram.ext import (
 from datetime import datetime
 from collections import deque
 import logging
-import os
 
 # =========================
 # BASIC SETUP
 # =========================
 logging.basicConfig(level=logging.INFO)
 
-BOT_TOKEN =
-("8437087674:AAEEBJDfEkxl0MbA__lsSF4A7qc7UpwzGU4")
+# ✅ TOKEN (FIXED SYNTAX)
+BOT_TOKEN = "8437087674:AAEEBJDfEkxl0MbA__lsSF4A7qc7UpwzGU4"
+
 bot = Bot(token=BOT_TOKEN)
 
 GROUP_IDS = [-1003361941052]
@@ -146,7 +146,12 @@ async def send_groups(msg):
     ])
     for gid in GROUP_IDS:
         try:
-            await bot.send_message(gid, msg, parse_mode="HTML", reply_markup=kb)
+            await bot.send_message(
+                gid,
+                msg,
+                parse_mode="HTML",
+                reply_markup=kb
+            )
         except:
             pass
 
@@ -193,10 +198,13 @@ async def ping_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # =========================
 async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
+
     app.add_handler(CommandHandler("start", start_cmd))
     app.add_handler(CommandHandler("ping", ping_cmd))
+
     asyncio.create_task(cr_worker())
     asyncio.create_task(mait_worker())
+
     app.run_polling()
 
 
